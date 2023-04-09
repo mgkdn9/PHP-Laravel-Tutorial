@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ListingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Listing;
@@ -16,33 +17,31 @@ use App\Models\Listing;
 */
 
 //All Listings
-Route::get('/', function () {
-    return view('listings', [
-        'heading' => 'Latest Listings',
-        'listings' => Listing::all()
-    ]);
-});
+Route::get('/', [ListingController::class, 'index']);
+
+//Show Create Form
+Route::get('/listings/create', [ListingController::class, 'create']);
+
+//Store Listing
+Route::post('/listings', [ListingController::class, 'store']);
 
 //Single Listing
-Route::get('/listings/{id}', function($id) {
-    return view('listing',[
-        'heading' => 'Your Listing',
-        'listing' => Listing::find($id)
-    ]);
-});
+Route::get('/listings/{listing}', [ListingController::class, 'show']);
+
+
 
 //Examples
-Route::get('/hello', function() {
+Route::get('/hello', function () {
     return response('<h1>Hello World</h1>', 200)
         ->header('Content-Type', 'text/plain')
         ->header('foo', 'bar');
 });
 
-Route::get('/posts/{id}', function($id){
+Route::get('/posts/{id}', function ($id) {
     // ddd($id); ddd: Dump, Die, Debug variables
     return response('Post ' . $id);
-})->where('id', '[0-9]+');//regex to only accept numerical values for id
+})->where('id', '[0-9]+'); //regex to only accept numerical values for id
 
-Route::get('/search', function(Request $request) {
+Route::get('/search', function (Request $request) {
     return $request->name . ' ' . $request->city;
 });
