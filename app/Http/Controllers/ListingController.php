@@ -10,8 +10,10 @@ class ListingController extends Controller
 {
     //Show All Listings
     public function index() {
+        // dd(Listing::latest()->filter(request(['tag','search']))->paginate(4));
         return view('listings.index', [
-            'listings' => Listing::latest()->filter(request(['tag']))->get()
+            // 'listings' => Listing::latest()->filter(request(['tag','search']))->simplePaginate(4)
+            'listings' => Listing::latest()->filter(request(['tag','search']))->paginate(4)
         ]);
     }
 
